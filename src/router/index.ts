@@ -41,10 +41,7 @@ export default route<StateInterface>(function (/* { store, ssrContext } */) {
   });
   
   Router.beforeEach(async (to, from, next) => {
-    // if (!!to.query.recovery) {
-    //   return next('/login')
-    // }
-    if (to.hash.includes('#access_token')) {
+    if (to.hash.includes('#access_token') && !to.query.recovery) {
       convertAccessToken(to.hash)
     }
     if (to.meta.requiresAuth && !LocalStorage.has('authUser')) {
