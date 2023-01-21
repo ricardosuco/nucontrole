@@ -1,18 +1,18 @@
 <template>
-    <div class="flex justify-between q-gutter-md">
+    <div class="flex justify-around q-gutter-y-lg">
         <div>
-            <q-card class="card-size border-card" flat>
-                <apexchart width="330" :options="typeGraphic" :series="[totalIncome, totalExpenses]"></apexchart>
+            <q-card class="border-card" flat>
+                <apexchart width="520" :options="typeGraphic" :series="[totalIncome, totalExpenses]"></apexchart>
             </q-card>
         </div>
-        <q-card class="card-size border-card" flat>
+        <q-card class="border-card" flat>
             <div>
-                <apexchart width="330" :options="categoryGraphic" :series="categorySeries"></apexchart>
+                <apexchart width="520" :options="categoryGraphic" :series="categorySeries"></apexchart>
             </div>
         </q-card>
-        <q-card class="card-size border-card" flat>
+        <q-card class="border-card" flat>
             <div>
-                <apexchart width="330" :options="statusGraphic" :series="statusSeries"></apexchart>
+                <apexchart width="520" :options="statusGraphic" :series="statusSeries"></apexchart>
             </div>
         </q-card>
     </div>
@@ -20,13 +20,11 @@
 
 <script lang='ts'>
 import { defineComponent, PropType } from 'vue'
+import { formatCurrency } from 'src/services/services'
 import { mapGetters } from 'vuex'
 import useApi from 'src/composables/UseApi'
 import VueApexCharts from 'vue3-apexcharts'
-import _, { cloneDeep, Object } from 'lodash'
-
-let categoryLabels: Array<string> = []
-let statusLabels: Array<string> = []
+import _, { cloneDeep } from 'lodash'
 
 export default defineComponent({
     name: 'Graphics',
@@ -38,11 +36,13 @@ export default defineComponent({
         return {
             getByCategory,
             getByStatus,
+            categoryLabels: [] as Array<string>,
+            statusLabels: [] as Array<string>,
             categorySeries: [] as Array<number>,
             statusSeries: [] as Array<number>,
             configChart: {
-                 chart: {
-                    width: 380,
+                chart: {
+                    width: 520,
                     type: 'donut',
                 },
                 title: {
@@ -54,6 +54,16 @@ export default defineComponent({
                         fontWeight: 'bold',
                         fontFamily: 'Poppins, sans-serif',
                         color: '#363F5F',
+                    },
+                },
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val: number) {
+                            return formatCurrency(val)
+                        },
                     },
                 },
                 labels: [] as Array<string>,
@@ -70,24 +80,31 @@ export default defineComponent({
                         },
                     },
                 ],
-            }
+            },
         }
     },
 
+    watch: {
+        async currentType() {
+            await this.fetchCategoryData()
+            await this.fetchStatusData()
+        },
+    },
+
     computed: {
-        ...mapGetters(['totalIncome', 'totalExpenses']),
+        ...mapGetters(['totalIncome', 'totalExpenses', 'currentType']),
 
         categoryGraphic(): object {
             let options = cloneDeep(this.configChart)
             options.title.text = 'Categoria'
-            options.labels = categoryLabels
+            options.labels = [...this.categoryLabels]
             return options
         },
 
         statusGraphic(): object {
             let options = cloneDeep(this.configChart)
             options.title.text = 'Status'
-            options.labels = statusLabels
+            options.labels = [...this.statusLabels]
             return options
         },
 
@@ -99,36 +116,52 @@ export default defineComponent({
         },
     },
 
-    async created() {
-        let response = await this.getByCategory('Receita')
-        response?.forEach((item) => {
-            categoryLabels.push(item.category)
-            this.categorySeries.push(item.value)
-        })
+    methods: {
+        async fetchCategoryData(): Promise<void> {
+            this.clearArrsCategory()
+            let response = await this.$store.dispatch('getDataForCategoryChart')
+            response?.forEach((item: any) => {
+                this.categoryLabels.push(item.category)
+                this.categorySeries.push(item.value)
+            })
+        },
 
-        let response2 = await this.getByStatus('Despesa')
-        response2?.forEach((item) => {
-            statusLabels.push(item.status)
-            this.statusSeries.push(item.value)
-        })
+        async fetchStatusData(): Promise<void> {
+            this.clearArrsStatus()
+            let response = await this.$store.dispatch('getDataForStatusChart')
+            response?.forEach((item: any) => {
+                this.statusLabels.push(item.status)
+                this.statusSeries.push(item.value)
+            })
+        },
+
+        clearArrsStatus(): void {
+            this.statusLabels = []
+            this.statusSeries = []
+        },
+
+        clearArrsCategory(): void {
+            this.categoryLabels = []
+            this.categorySeries = []
+        },
+    },
+
+    async created() {
+        await this.fetchCategoryData()
+        await this.fetchStatusData()
     },
 
     beforeUnmount() {
-        // VueApexCharts.destroy()
+        this.clearArrsStatus()
+        this.clearArrsCategory()
     },
 })
 </script>
 
 <style lang="scss" scoped>
-.card-size {
-    min-width: 340px;
-    min-height: 240px;
-}
-
 .border-card {
     border: 2px solid #ffffff;
     border-radius: 16px;
     box-shadow: 0 4px 8px rgb(98 115 132 / 4%), 0 0 4px rgb(98 115 132 / 12%);
 }
-
 </style>
