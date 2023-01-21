@@ -48,10 +48,10 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      // env: {
-      //   PUBLIC_SUPABASE_URL: 'https://zgfuatvwfagxsjrigewk.supabase.co',
-      //   PUBLIC_SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnZnVhdHZ3ZmFneHNqcmlnZXdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzIyODIyOTUsImV4cCI6MTk4Nzg1ODI5NX0.dUINIWyhI7-SBz_imue3vIOqKjasPnPTZ1bJGKdxdxs'
-      // },
+      env: {
+        PUBLIC_SUPABASE_URL: 'https://zgfuatvwfagxsjrigewk.supabase.co',
+        PUBLIC_SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnZnVhdHZ3ZmFneHNqcmlnZXdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzIyODIyOTUsImV4cCI6MTk4Nzg1ODI5NX0.dUINIWyhI7-SBz_imue3vIOqKjasPnPTZ1bJGKdxdxs'
+      },
 
       // transpile: false,
       // publicPath: '/',
