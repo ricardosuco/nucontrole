@@ -48,10 +48,10 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      env: {
-        PUBLIC_SUPABASE_URL: '',
-        PUBLIC_SUPABASE_KEY: ''
-      },
+      // env: {
+      //   PUBLIC_SUPABASE_URL: '',
+      //   PUBLIC_SUPABASE_KEY: ''
+      // },
 
       // transpile: false,
       // publicPath: '/',
@@ -88,6 +88,7 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
+      lang: 'pt-br',
       config: {
         loading: {
           spinner: 'QSpinnerDots',
