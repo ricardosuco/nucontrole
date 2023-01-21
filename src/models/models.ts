@@ -12,3 +12,20 @@ export interface Column {
     align?: string
     format?: (val: any) => string
 }
+
+export interface Period {
+    month: string | null,
+    year: number | null
+}
+
+export interface MonthOptions {
+    label: string,
+    value: string
+}
+
+export interface CopyRegistersArgs {
+    month_copy_input?: string,
+    year_copy_input?: number,
+    new_month_input?: string,
+    new_year_input?: number,
+}
