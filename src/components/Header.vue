@@ -1,23 +1,40 @@
 <template>
     <header>
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center q-pt-lg">
             <!-- <q-img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" alt="Quasar Logo" width="5%" fit="contain" /> -->
-            <span class="text-h4 text-white text-weight-medium">Nucontrole</span>
+            <div class="flex column">
+                <div v-if="$q.screen.lt.sm" style="top: 27px; right: 27px" class="absolute-top-right">
+                    <q-btn @click="isShowValues = !isShowValues" :icon="isShowValues ? 'visibility' : 'visibility_off'" color="white" round flat />
+                </div>
+                <span class="text-h4 text-white text-weight-medium">Nucontrole</span>
+                <span v-if="$q.screen.lt.sm" class="text-subtitle1 text-white"
+                    >Olá, <b>{{ userName }}!</b></span
+                >
+            </div>
             <div>
-                <q-btn @click="handleLogout" color="white" flat icon="logout" round text-color="white" size="lg">
+                <span v-if="$q.screen.gt.xs" class="text-subtitle1 text-white"
+                    >Olá, <b>{{ userName }}!</b></span
+                >
+                <q-btn v-show="$q.screen.gt.xs" @click="handleLogout" color="white" flat icon="logout" round text-color="white" size="lg">
                     <q-tooltip class="text-subtitle2">Sair</q-tooltip>
                 </q-btn>
             </div>
         </div>
+        <div class="flex justify-between items-center">
+            <div class="text-subtitle1 text-white">
+                <span>Período atual: </span>
+                <span class="text-h6 text-weight-bold">{{ showPeriod }}</span>
+            </div>
+        </div>
         <div class="row q-col-gutter-lg">
             <div class="col-xs-12 col-md-4 col-lg-4">
-                <Card class="margin-" :value="totalIncome" title="Receitas" icon="fa-solid fa-circle-arrow-up" />
+                <Card :value="totalIncome" :isShowValues="isShowValues" title="Receitas" colorIcon="secondary" icon="fa-solid fa-circle-arrow-up" />
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4">
-                <Card title="Despesas" :value="totalExpenses" icon="fa-solid fa-circle-arrow-down" />
+                <Card title="Despesas" :value="totalExpenses" :isShowValues="isShowValues" colorIcon="red-10" icon="fa-solid fa-circle-arrow-down" />
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4">
-                <Card title="Saldo" :value="totalBalance" icon="fa-solid fa-sack-dollar" />
+                <Card title="Saldo" :value="totalBalance" :isShowValues="isShowValues" colorIcon="positive" icon="fa-solid fa-sack-dollar" />
             </div>
         </div>
     </header>
@@ -28,6 +45,7 @@ import { defineComponent } from 'vue'
 import Card from 'components/Card.vue'
 import { mapGetters } from 'vuex'
 import useAuthUser from 'src/composables/UseAuthUser'
+import { Period } from 'src/models'
 
 export default defineComponent({
     name: 'Header',
@@ -38,13 +56,21 @@ export default defineComponent({
         const { logout } = useAuthUser()
         return {
             logout,
+            isShowValues: true,
         }
     },
 
     computed: {
-        ...mapGetters(['totalIncome', 'totalExpenses', 'totalBalance']),
+        ...mapGetters(['totalIncome', 'totalExpenses', 'totalBalance', 'currentPeriod']),
 
-        
+        userName(): string | object | null {
+            return this.$q.localStorage.getItem('userName')
+        },
+
+        showPeriod(): string {
+            if (this.currentPeriod?.month && this.currentPeriod?.year) return `${this.currentPeriod.month}/${this.currentPeriod.year}`
+            else return 'Todos os registros'
+        },
     },
 
     methods: {
@@ -52,7 +78,7 @@ export default defineComponent({
             await this.logout()
             this.$router.push('/login')
         },
-    }
+    },
 })
 </script>
 
