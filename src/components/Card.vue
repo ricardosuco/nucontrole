@@ -3,9 +3,14 @@
         <q-card bordered class="border-card q-pa-lg" flat>
             <div class="flex justify-between items-center q-pb-md">
                 <span class="main-color text-subtitle1">{{ title }}</span>
-                <q-icon size="sm" :name="icon" />
+                <q-icon size="sm" :color="colorIcon" :name="icon" />
             </div>
-            <h5 class="text-primary">{{ formatCurrency(value) }}</h5>
+            <div v-if="isShowValues">
+                <h5 class="text-primary">{{ formatCurrency(value) }}</h5>
+            </div>
+            <div v-else>
+                <q-skeleton width="180px" type="rect" animation="none"/>
+            </div>
         </q-card>
     </div>
 </template>
@@ -25,6 +30,14 @@ export default defineComponent({
         value: {
             type: Number,
             default: 0,
+        },
+        colorIcon: {
+            type: String,
+            default: 'secondary',
+        },
+        isShowValues: {
+            type: Boolean,
+            default: true,
         },
     },
     data() {
