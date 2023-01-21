@@ -1,48 +1,44 @@
 import useSupabase from 'boot/supabase'
-import { Notify, LocalStorage, Loading } from 'quasar'
+import { date, LocalStorage, Loading } from 'quasar'
 import { LoginUser } from 'src/models'
+import { localeDate } from 'src/services/services'
 
 export default function useAuthUser() {
     const { supabase } = useSupabase()
 
-    const login = async (loginUser: LoginUser) => {
-        try {
+    const login = async (loginUser: LoginUser): Promise<void> => {
             Loading.show()
             const { data, error } = await supabase.auth.signInWithPassword(loginUser)
             Loading.hide()
             if (error) throw error
+            LocalStorage.set('period', {
+                month: date.formatDate(Date.now(), 'MMM', localeDate),
+                year: date.formatDate(Date.now(), 'YYYY', localeDate)
+            })
             LocalStorage.set('authUser', data?.user?.id)
-            let sucess = true
-            return sucess
-        } catch (error: any) {
-            console.log(error)
-            if (error.status === 400 || error.status === 403) {
-                Notify.create({
-                    message: 'Usuário ou senha inválidos!',
-                    type: 'negative',
-                    position: 'top',
-                })
-            } else {
-                Notify.create({
-                    message: 'Ocorreu um erro inesperado...',
-                    type: 'negative',
-                    position: 'top',
-                })
-            }
-        }
+            LocalStorage.set('userName', data?.user?.user_metadata.name)          
     }
 
-    // const loginWithSocialProvider = async (provider: string) => {
-    //     const { user, error } = await supabase.auth.signIn({provider})
-    //     if (error) throw error
-    // };
+    const loginWithSocialProvider = async (provider: any) => {
+        const { data, error } = await supabase.auth.signInWithOAuth({provider: provider})
+        if (error) throw error
+        console.log(data)
+        // LocalStorage.set('period', {
+        //     month: date.formatDate(Date.now(), 'MMM', localeDate),
+        //     year: date.formatDate(Date.now(), 'YYYY', localeDate)
+        // })
+        // LocalStorage.set('authUser', data?.user?.id)
+        // LocalStorage.set('userName', data?.user?.user_metadata.full_name) 
+    };
 
     const logout = async () => {
         Loading.show()
         const { error } = await supabase.auth.signOut()
         Loading.hide()
         if (error) throw error
+        LocalStorage.remove('period')
         LocalStorage.remove('authUser')
+        LocalStorage.remove('userName')
     }
 
     // const isLoggedIn = () => {
@@ -50,40 +46,33 @@ export default function useAuthUser() {
     // }
 
     const register = async (loginUser: LoginUser, ...meta: any[]) => {
-        try {
             Loading.show()
             const { data, error } = await supabase.auth.signUp(loginUser)
             Loading.hide()
             if (error) throw error
-            let sucess = true
-            return sucess
-        } catch (error: any) {
-            if (error.status === 400 || error.status === 403) {
-                Notify.create({
-                    message: error.toString(),
-                    type: 'negative',
-                    position: 'top',
-                })
-            } else {
-                Notify.create({
-                    message: 'Ocorreu um erro inesperado...',
-                    type: 'negative',
-                    position: 'top',
-                })
-            }
-        }
+            if (!data.user?.identities?.length) throw new Error('Já existe um cadastro vinculado a este email') 
     }
 
-    const update = async (data: any) => {}
+    const updateUser = async (new_password: string) => {
+        const { data, error } = await supabase.auth.updateUser({
+            password: new_password
+          })
+          if (error) throw error
+    }
 
-    const sendPasswordResetEmail = async (email: string) => {}
+    const sendPasswordResetEmail = async (email: string) => {
+        const {data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.href}?recovery=true`,
+          })
+        if (error) throw error
+    }
 
     return {
         login,
-        // loginWithSocialProvider,
+        loginWithSocialProvider,
         logout,
         register,
-        update,
+        updateUser,
         sendPasswordResetEmail,
     }
 }
