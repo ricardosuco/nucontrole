@@ -62,7 +62,7 @@ export default function useAuthUser() {
 
     const sendPasswordResetEmail = async (email: string) => {
         const {data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.href}?recovery=true`,
+            redirectTo: `${window.location.origin}/login?recovery=true`,
           })
         if (error) throw error
     }
