@@ -49,8 +49,8 @@ module.exports = configure(function (ctx) {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       // env: {
-      //   PUBLIC_SUPABASE_URL: '',
-      //   PUBLIC_SUPABASE_KEY: ''
+      //   PUBLIC_SUPABASE_URL: 'https://zgfuatvwfagxsjrigewk.supabase.co',
+      //   PUBLIC_SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnZnVhdHZ3ZmFneHNqcmlnZXdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzIyODIyOTUsImV4cCI6MTk4Nzg1ODI5NX0.dUINIWyhI7-SBz_imue3vIOqKjasPnPTZ1bJGKdxdxs'
       // },
 
       // transpile: false,
@@ -88,7 +88,6 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      lang: 'pt-br',
       config: {
         loading: {
           spinner: 'QSpinnerDots',
