@@ -7,15 +7,17 @@
             style="border-radius: 8px"
             title-class="text-white"
             flat
+            :no-data-label="notFoundDataText"
             :columns="columns"
+            :visible-columns="$q.screen.lt.sm ? columnsMobile : columnsDesktop"
             :rows="rows"
             :rows-per-page-options="[15, 25, 50, 100]"
         >
-            <template v-slot:body-cell-number="props">
+            <!-- <template v-slot:body-cell-number="props">
                 <q-td class="text-weight-regular" :key="props.row.id" :props="props">
                     {{ props.rowIndex + 1 }}
                 </q-td>
-            </template>
+            </template> -->
             <template v-slot:body-cell-value="props">
                 <q-td :key="props.row.id" :props="props">
                     <div class="q-gutter-x-sm">
@@ -28,7 +30,7 @@
             </template>
             <template v-slot:body-cell-actions="props">
                 <q-td>
-                    <div>
+                    <div class="text-center">
                         <q-btn @click="showDialogEdit(props.row)" icon="edit" color="secondary" :disable="!props.row" round flat dense>
                             <q-tooltip class="text-subtitle2">Editar registro</q-tooltip>
                         </q-btn>
@@ -41,10 +43,10 @@
         </q-table>
     </div>
     <q-dialog :maximized="$q.platform.is.desktop ? false : true" v-model="dialogEdit">
-        <NewTransactionDialog @closeModal="closeDialogEdit()" :editRegister="editRegister" :isEdit="true" title="Editar registro" @closeDialogEdit="closeDialogEdit()" />
+        <NewTransactionDialog @onClose="onClose" :editRegister="editRegister" :isEdit="true" title="Editar registro" @closeDialogEdit="closeDialogEdit()" />
     </q-dialog>
     <q-dialog v-model="dialogDelete">
-        <DeleteDialog :id="deleteRegisterId" @closeDialogDelete="closeDialogDelete()" />
+        <DeleteDialog :id="deleteRegisterId" @onClose="onClose" />
     </q-dialog>
 </template>
 
@@ -69,34 +71,38 @@ export default defineComponent({
     name: 'Table',
     data() {
         const columns = [
-            {
-                name: 'number',
-                required: true,
-                label: '#',
-                sortable: true,
-                align: 'left',
-            },
+            // {
+            //     name: 'number',
+            //     required: true,
+            //     label: '#',
+            //     sortable: true,
+            //     align: 'left',
+            // },
             {
                 name: 'description',
-                required: true,
                 label: 'Descrição',
                 field: 'description',
                 align: 'left',
                 classes: 'text-weight-regular main-color',
             },
             {
-                name: 'type',
-                required: true,
-                label: 'Tipo',
-                field: 'type',
-                align: 'left',
+                name: 'value',
+                label: 'Valor',
+                field: 'value',
                 sortable: true,
-                // classes: (val: string) => (val === 'Receita' ? 'text-primary text-weight-medium' : 'text-negative text-weight-medium'),
-                classes: 'text-weight-regular main-color',
+                align: 'left',
             },
+            // {
+            //     name: 'type',
+            //     required: true,
+            //     label: 'Tipo',
+            //     field: 'type',
+            //     align: 'left',
+            //     sortable: true,
+            //     classes: 'text-weight-regular main-color',
+            // },
             {
                 name: 'category',
-                required: true,
                 label: 'Categoria',
                 field: 'category',
                 sortable: true,
@@ -105,45 +111,38 @@ export default defineComponent({
             },
             {
                 name: 'status',
-                required: true,
                 label: 'Status',
                 field: 'status',
                 sortable: true,
                 align: 'left',
                 classes: 'text-weight-regular main-color',
             },
-            {
-                name: 'date',
-                required: true,
-                label: 'Data',
-                field: 'created_at',
-                sortable: true,
-                align: 'left',
-                format: (val: string) => formatDate(val),
-                classes: 'text-weight-regular main-color',
-            },
-            {
-                name: 'value',
-                required: true,
-                label: 'Valor',
-                field: 'value',
-                sortable: true,
-                align: 'left',
-            },
+            // {
+            //     name: 'date',
+            //     required: true,
+            //     label: 'Data de criação',
+            //     field: 'created_at',
+            //     sortable: true,
+            //     align: 'left',
+            //     format: (val: string) => formatDate(val),
+            //     classes: 'text-weight-regular main-color',
+            // },
             {
                 name: 'actions',
-                required: true,
                 label: 'Ações',
                 field: 'actions',
-                align: 'left',
+                align: 'center',
             },
         ] as Column[]
         return {
             columns,
+            columnsMobile: ['description', 'value', 'actions'] as string[],
+            columnsDesktop: ['description', 'value', 'category', 'status', 'actions'] as string[],
             dialogDelete: false,
             deleteRegisterId: 0,
             dialogEdit: false,
             editRegister: {},
+            notFoundDataText: 'Nenhum registro encontrado para o período selecionado',
         }
     },
 
@@ -167,10 +166,8 @@ export default defineComponent({
             this.editRegister = val
         },
 
-        closeDialogDelete() {
+        onClose(): void {
             this.dialogDelete = false
-        },
-        closeDialogEdit() {
             this.dialogEdit = false
         },
     },
