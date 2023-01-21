@@ -1,11 +1,18 @@
 import useSupabase from 'src/boot/supabase'
 import { Notify, LocalStorage, Loading } from 'quasar'
+import { Period, CopyRegistersArgs } from 'src/models'
 
 
 export default function useApi() {
     const { supabase } = useSupabase()
 
-    const list = async (table: string) => {
+    const list = async (table: string, period: Period | null) => {
+        if (period) {
+            const { month, year } = period
+            const { data, error } = await supabase.from(table).select('*').eq('user_id', LocalStorage.getItem('authUser')).eq('month', month).eq('year', year)
+            if (error) throw error
+            return data
+        }
         const { data, error } = await supabase.from(table).select('*').eq('user_id', LocalStorage.getItem('authUser'))
         if (error) throw error
         return data
@@ -25,6 +32,17 @@ export default function useApi() {
 
     const getByStatus = async (type: string) => {
         const { data, error } = await supabase.rpc('filter_status', { type_input: type })
+        if (error) throw error
+        return data
+    }
+
+    // const getByDate = async (date: object) => {
+    //     const { data, error } = await supabase.rpc('filter_date', { date_input: date })
+    //     if (error) throw error
+    //     return data
+    // }
+    const copyRegistersByPeriod = async (copyRegistersArgs: CopyRegistersArgs) => {
+        const { data, error } = await supabase.rpc('copy_registers_by_period', {...copyRegistersArgs, user_id_input: LocalStorage.getItem('authUser') } )
         if (error) throw error
         return data
     }
@@ -71,8 +89,10 @@ export default function useApi() {
         getById,
         getByCategory,
         getByStatus,
+        // getByDate,
         create,
         update,
         remove,
+        copyRegistersByPeriod,
     }
 }
