@@ -8,15 +8,25 @@
                 </div>
                 <div class="row q-gutter-y-sm">
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-input v-model="register.description" label="Descrição" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                        <q-input v-model="register.description" label="Descrição" maxlength="50" counter outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <div class="row q-col-gutter-md q-mb-md">
-                            <div class="col-xs-12 col-md-6 col-lg-6">
+                            <div class="col-xs-6 col-md-6 col-lg-6">
+                                <q-btn @click="setRegisterType('Despesa')" class="full-width q-pa-md text-subtitle1" unelevated :color="btnTypeColor.despesa" no-caps label="Despesa" />
+                            </div>
+                            <div class="col-xs-6 col-md-6 col-lg-6">
                                 <q-btn @click="setRegisterType('Receita')" class="full-width q-pa-md text-subtitle1" unelevated :color="btnTypeColor.receita" no-caps label="Receita" />
                             </div>
-                            <div class="col-xs-12 col-md-6 col-lg-6">
-                                <q-btn @click="setRegisterType('Despesa')" class="full-width q-pa-md text-subtitle1" unelevated :color="btnTypeColor.despesa" no-caps label="Despesa" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <div class="row q-col-gutter-md">
+                            <div class="col-xs-6 col-md-6 col-lg-6">
+                                <q-select v-model="register.month" :options="monthOptions" label="Mês" outlined emit-value clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                            </div>
+                            <div class="col-xs-6 col-md-6 col-lg-6">
+                                <q-select v-model="register.year" :options="yearOptions" label="Ano" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
                             </div>
                         </div>
                     </div>
@@ -40,7 +50,7 @@
                         />
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-btn class="full-width q-pa-md text-h6" no-caps text-color="white" unelevated color="positive" label="Adicionar" type="submit" />
+                        <q-btn class="full-width q-pa-md text-h6" no-caps text-color="white" unelevated color="positive" :label="isEdit ? 'Confirmar edição' : 'Adicionar'" type="submit" />
                     </div>
                 </div>
             </q-card>
@@ -51,6 +61,8 @@
 <script>
 import { defineComponent } from 'vue'
 import useApi from 'src/composables/UseApi'
+import { monthOptions, yearOptions, currentDate } from 'src/services/services'
+import { mapGetters } from 'vuex'
 
 export default defineComponent({
     name: 'NewTransactionDialog',
@@ -58,19 +70,16 @@ export default defineComponent({
         title: {
             type: String,
             default: 'Novo registro',
-            required: true,
         },
 
         isEdit: {
             type: Boolean,
             default: false,
-            required: true,
         },
 
         editRegister: {
             type: Object,
             default: () => ({}),
-            required: true,
         },
     },
     data() {
@@ -78,47 +87,51 @@ export default defineComponent({
         return {
             create,
             update,
+            monthOptions,
+            yearOptions,
             statusOptions: ['Recebido', 'Pendente'],
             categoryOptions: ['Bônus', 'Rendimentos', 'Salário', 'Serviços', 'Outros'],
             register: {
                 description: '',
                 category: '',
-                type: 'Receita',
+                type: 'Despesa',
                 value: '',
                 status: '',
+                month: this.currentDate().month,
+                year: this.currentDate().year,
             },
         }
     },
 
-    watch: {
-    },
+    watch: {},
 
     computed: {
+        ...mapGetters(['currentPeriod']),
         btnTypeColor() {
             const colors = {
-                receita: this.register.type === 'Receita' ? 'teal-10' : 'teal-2',
-                despesa: this.register.type === 'Despesa' ? 'teal-10' : 'teal-2',
+                receita: this.register.type === 'Receita' ? 'primary' : 'teal-2',
+                despesa: this.register.type === 'Despesa' ? 'primary' : 'teal-2',
             }
             return colors
         },
     },
 
     methods: {
+        currentDate,
         async addNewRegister() {
             let newRegister = { ...this.register }
             newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
             await this.create('registers', newRegister)
-            await this.$store.dispatch('getList')
-            this.$emit('closeModal')
+            await this.$store.dispatch('getList', this.currentPeriod)
+            this.$emit('onClose')
         },
 
         async updateRegister() {
             let { id, ...newRegister } = this.register
-            if (typeof newRegister.value === 'string') 
-            newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
+            if (typeof newRegister.value === 'string') newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
             await this.update('registers', id, newRegister)
-            await this.$store.dispatch('getList')
-            this.$emit('closeModal')
+            await this.$store.dispatch('getList', this.currentPeriod)
+            this.$emit('onClose')
         },
 
         onSubmit() {
@@ -149,8 +162,9 @@ export default defineComponent({
     },
     created() {
         if (this.isEdit) {
-            this.register = { ...this.editRegister }
-        }
+            this.register = { ...this.editRegister, value: this.editRegister.value.toFixed(2) }
+        } 
+        this.setOptions()
     },
 })
 </script>
