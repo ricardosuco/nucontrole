@@ -8,6 +8,14 @@ const mutation: MutationTree<ExampleStateInterface> = {
 
   SET_REGISTERS(state, registers): void {
     state.registers = registers
+  },
+
+  SET_CURRENT_TYPE(state, currentType): void {
+    state.currentType = currentType
+  },
+
+  SET_PERIOD(state, period): void {
+    state.period = period
   }
 
 };

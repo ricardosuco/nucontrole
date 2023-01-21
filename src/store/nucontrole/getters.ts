@@ -28,7 +28,16 @@ const getters: GetterTree<ExampleStateInterface, StateInterface> = {
   totalBalance(state, getters) {
     let total = getters.totalIncome - getters.totalExpenses
     return total
+  },
+
+  currentType(state): string {
+    return state.currentType
+  },
+
+  currentPeriod(state): object {
+    return state.period
   }
+
 };
 
 export default getters;
