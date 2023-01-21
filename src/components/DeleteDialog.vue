@@ -17,6 +17,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import useApi from 'src/composables/UseApi'
+import { mapGetters } from 'vuex'
 export default defineComponent({
     name: 'DeleteDialog',
     props: {
@@ -32,11 +33,15 @@ export default defineComponent({
         }
     },
 
+    computed: {
+        ...mapGetters(['currentPeriod'])
+    },
+
     methods: {
         async deleteRegister() {
             await this.remove('registers', this.id)
-            await this.$store.dispatch('getList')
-            this.$emit('closeDialogDelete')
+            await this.$store.dispatch('getList', this.currentPeriod)
+            this.$emit('onClose')
         },
     },
 })
