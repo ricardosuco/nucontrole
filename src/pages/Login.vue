@@ -1,64 +1,102 @@
 <template>
-    <div class="row">
-        <div class="col-xs-12 col-md-7 bg-primary">
-            <div style="margin: 20vh auto">
-                <div class="text-white text-weight-medium text-center text-h3">Nucontrole</div>
-                <div class="column q-ma-xl text-white text-weight-medium text-center text-subtitle1">
-                    <span>Comece a controlar suas finanças agora mesmo!</span>
+        <div v-if="$q.screen.gt.sm" class="row" style="height: 100vh">
+            <div class="col-xs-12 col-md-7 bg-primary">
+                <div style="margin: 20vh auto">
+                    <div class="text-white text-weight-medium text-center text-h3">Nucontrole</div>
+                    <div class="column q-ma-xl text-white text-weight-medium text-center text-subtitle1">
+                        <span>Comece a controlar suas finanças agora mesmo!</span>
+                    </div>
+                    <div class="text-center">
+                        <q-img width="280px" src="images/illustration1.svg" />
+                    </div>
                 </div>
-                <div class="text-center">
-                    <q-img width="280px" src="images/illustration1.svg" />
+            </div>
+            <div v-if="recoveryPwd" class="col-xs-12 col-md-5 login-bg flex items-center justify-center">
+                <CardRecoveryPassword @goToLogin="goToLogin()" />
+            </div>
+            <div v-else class="col-xs-12 col-md-5 login-bg flex items-center justify-center">
+                <q-intersection transition="fade" transition-duration="1000">
+                    <component @switchCard="switchComponent($event)" @showDialogInfo="showDialogInfo($event)" :is="currentComponent"></component>
+                </q-intersection>
+            </div>
+        </div>
+        <div v-else class="row" style="height: 100vh">
+            <div class="col-xs-12 col-md-7 bg-primary q-px-md">
+                <div style="margin: 5vh auto">
+                    <div class="text-white text-weight-medium text-center text-h3">Nucontrole</div>
+                    <div class="column q-ma-lg text-white text-weight-medium text-center text-subtitle1">
+                        <span>Comece a controlar suas finanças agora mesmo!</span>
+                    </div>
+                    <div v-if="recoveryPwd" class="flex justify-center">
+                        <CardRecoveryPassword @goToLogin="goToLogin()" />
+                    </div>
+                    <div v-else class="flex justify-center">
+                        <q-intersection transition="fade" transition-duration="1000">
+                            <component @switchCard="switchComponent($event)" @showDialogInfo="showDialogInfo($event)" :is="currentComponent"></component>
+                        </q-intersection>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-5 login-bg flex items-center justify-center">
-            <CardLogin :user="user" />
-        </div>
-    </div>
+        <q-dialog v-model="showDialog">
+            <DialogConfirmation :text="dialogText" />
+        </q-dialog>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import useAuthUser from 'src/composables/UseAuthUser'
+import { defineComponent } from 'vue'
 import CardLogin from 'src/components/CardLogin.vue'
-
+import CardResetPassword from 'src/components/CardResetPassword.vue'
+import CardSignUp from 'src/components/CardSignUp.vue'
+import DialogConfirmation from 'src/components/DialogConfirmation.vue'
+import CardRecoveryPassword from 'src/components/CardRecoveryPassword.vue'
 export default defineComponent({
     name: 'Login',
     components: {
         CardLogin,
+        CardResetPassword,
+        CardSignUp,
+        DialogConfirmation,
+        CardRecoveryPassword,
     },
 
     data() {
-        const { login, register } = useAuthUser()
         return {
-            login,
-            register,
-            user: {
-                email: '',
-                password: '',
-            },
-            isPwd: false,
+            currentComponent: 'CardLogin',
+            showDialog: false,
+            dialogText: '',
+            recoveryPwd: false,
+            resetToken: '',
         }
     },
 
-    methods: {
-        async handleLogin() {
-            let login = await this.login(this.user)
-            if (login) this.$router.push('/')
+    watch: {
+        showDialog(val: boolean) {
+            if (!val) this.currentComponent = 'CardLogin'
         },
+    },
 
-        validateRegister() {
-            if (!!this.user.password || !!this.user.email) {
-                return true
-            }
+    methods: {
+        switchComponent(event: string) {
+            this.currentComponent = event
         },
-        isValidEmail(val: string) {
-            const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
-            return emailPattern.test(val) || 'Email Inválido!'
+        showDialogInfo(event: string) {
+            this.dialogText = event
+            this.showDialog = true
         },
-        isValidPassword(val: string) {
-            return val.length > 5 || 'Senha inválida!'
+        goToLogin() {
+            this.recoveryPwd = false
+            this.$router.push('/login')
         },
+    },
+
+    created() {
+        let queryString = this.$route.query
+        console.log(queryString)
+        if ('recovery' in queryString && queryString.recovery === 'true') {
+            this.recoveryPwd = true
+            // this.resetToken = this.$route.query.token as string
+        }
     },
 })
 </script>
