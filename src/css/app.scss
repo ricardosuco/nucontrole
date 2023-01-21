@@ -33,6 +33,13 @@ html {
     color: var(--main-color);
 }
 
+.card-login {
+  border: 2px solid #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgb(98 115 132 / 4%), 0 0 4px rgb(98 115 132 / 12%);
+  max-width: 400px;
+}
+
 ::-webkit-scrollbar {
   height: 12px;
   width: 14px;
