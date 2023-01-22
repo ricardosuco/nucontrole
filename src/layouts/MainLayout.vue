@@ -51,7 +51,7 @@
             <q-dialog v-model="showDialogFilter">
                 <FilterDialog />
             </q-dialog>
-            <q-dialog v-model="showCopyRegistersDialog" >
+            <q-dialog v-model="showCopyRegistersDialog">
                 <CopyRegistersDialog @closeRegistersCopyDialog="closeRegistersCopyDialog($event)" />
             </q-dialog>
         </q-layout>
@@ -68,6 +68,9 @@ import useAuthUser from 'src/composables/UseAuthUser'
 import { mapGetters } from 'vuex'
 import { exportCsv } from 'src/services/services'
 import { defineComponent } from 'vue'
+import { konamiCodeSilvioSantos } from 'src/services/services'
+
+konamiCodeSilvioSantos()
 
 export default defineComponent({
     name: 'MainLayout',

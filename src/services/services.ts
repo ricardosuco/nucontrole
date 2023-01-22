@@ -1,4 +1,4 @@
-import { date, LocalStorage, Notify } from 'quasar'
+import { date, LocalStorage, Notify, Loading } from 'quasar'
 import { MonthOptions, Period } from 'src/models/models'
 import { Base64 } from 'js-base64';
 
@@ -99,4 +99,30 @@ export const convertAccessToken = (token: string): void => {
         })
     }
     return 
+}
+
+export const konamiCodeSilvioSantos = (): void => {
+let secretCode = 'maoe'
+let keys = ''
+let timeout: any
+window.addEventListener('keydown', (e) => {
+    clearTimeout(timeout)
+
+    keys += e.key.toLowerCase()
+    if (keys === secretCode.toLocaleLowerCase()) {
+        keys = ''
+
+        Loading.show({
+            html: true,
+            message: '<img style="max-width: 350px; max-height: 300px" src="images/silviosantos.png"/>',
+            ignoreDefaults: true,
+            spinnerSize: 0,
+            
+            
+        })
+        setTimeout(() => Loading.hide(), 200);
+    }
+
+    timeout = setTimeout(() => keys = '', 1000)
+})
 }
