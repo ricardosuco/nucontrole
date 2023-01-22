@@ -16,10 +16,10 @@
                 </div>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12">
-                <q-btn @click="filterByPeriod(false)" class="full-width q-pa-sm" size="lg" no-caps color="secondary" unelevated icon="filter_list" label="Filtrar por período" v-close-popup />
+                <q-btn @click="filterByPeriod(false)" class="full-width q-pa-sm" size="lg" no-caps color="secondary" unelevated label="Filtrar período" v-close-popup />
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12">
-                <q-btn @click="filterByPeriod(true)" class="full-width q-pa-sm" size="lg" no-caps color="primary" unelevated label="Todos os registros" v-close-popup />
+                <q-btn @click="filterByPeriod(true)" class="full-width q-pa-sm" size="lg" no-caps color="primary" unelevated label="Exibir todos" v-close-popup />
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12">
                 <q-btn class="full-width q-pa-sm" outline color="primary" size="lg" no-caps label="Voltar" v-close-popup />

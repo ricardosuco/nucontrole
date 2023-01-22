@@ -1,7 +1,7 @@
 <template>
     <div class="row col-xs-12 col-md-12 col-lg-12 q-col-gutter-lg q-mb-md">
         <div class="col-xs-12 col-md-3 col-lg-3">
-            <q-btn @click="showDialogFilter = true" size="18px" no-caps icon="filter_list" class="full-width q-px-lg q-py-sm" color="accent" unelevated label="Filtrar" />
+            <q-btn @click="showDialogFilter = true" v-if="$q.screen.gt.xs" size="18px" no-caps icon="filter_list" class="full-width q-px-lg q-py-sm" color="accent" unelevated label="Filtrar" />
         </div>
         <div class="col-xs-12 col-md-3 col-lg-3">
             <q-btn
@@ -28,11 +28,11 @@
                 class="full-width q-px-lg q-py-sm"
                 color="accent"
                 unelevated
-                label="Exportar"
+                label="Exportar CSV"
             />
         </div>
         <div class="col-xs-12 col-md-3 col-lg-3">
-            <q-btn @click="showCopyRegistersDialog = !showCopyRegistersDialog" size="18px" no-caps icon="history" class="full-width q-px-lg q-py-sm" color="accent" unelevated label="Copiar registros" />
+            <q-btn @click="showCopyRegistersDialog = !showCopyRegistersDialog" v-if="$q.screen.gt.xs" size="18px" no-caps icon="history" class="full-width q-px-lg q-py-sm" color="accent" unelevated label="Copiar registros" />
         </div>
     </div>
     <q-dialog v-model="showDialogFilter">

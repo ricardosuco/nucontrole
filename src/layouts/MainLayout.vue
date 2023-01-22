@@ -21,7 +21,7 @@
                     <q-tab @click="showCopyRegistersDialog = true" name="copy" icon="history">
                         <q-tooltip> Copiar registros </q-tooltip>
                     </q-tab>
-                    <q-tab @click="showCharts = !showCharts" name="charts" :icon="showCharts ? 'table_rows' : 'donut_large'">
+                    <!-- <q-tab @click="showCharts = !showCharts" name="charts" :icon="showCharts ? 'table_rows' : 'donut_large'">
                         <q-tooltip> {{ showCharts ? 'Tabeals' : 'Gráficos' }} </q-tooltip>
                     </q-tab>
                     <q-tab v-if="showCharts" name="swap" icon="swap_horiz">
@@ -29,7 +29,7 @@
                     </q-tab>
                     <q-tab v-if="!showCharts" @click="exportCsv(allRegisters, totalIncome, totalExpenses, totalBalance)" name="charts" icon="file_download">
                         <q-tooltip> Exportar </q-tooltip>
-                    </q-tab>
+                    </q-tab> -->
                     <q-tab @click="handleLogout" name="logout" icon="logout">
                         <q-tooltip> Sair </q-tooltip>
                     </q-tab>
@@ -121,6 +121,6 @@ export default defineComponent({
 }
 
 .container-padding {
-    padding: 4rem 0;
+    padding: 3rem 0;
 }
 </style>
