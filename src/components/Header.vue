@@ -45,7 +45,6 @@ import { defineComponent } from 'vue'
 import Card from 'components/Card.vue'
 import { mapGetters } from 'vuex'
 import useAuthUser from 'src/composables/UseAuthUser'
-import { Period } from 'src/models'
 
 export default defineComponent({
     name: 'Header',
