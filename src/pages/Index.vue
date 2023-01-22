@@ -1,17 +1,17 @@
 <template>
     <q-page padding class="wrapper">
         <div>
-            <Toolbar v-if="$q.screen.gt.xs" @switchContent="switchContent($event)" />
+            <Toolbar @switchContent="switchContent($event)" />
             <component :rows="allRegisters" :is="currentComponent"></component>
         </div>
-        <div class="text-justify q-pa-md q-mt-md text-subtitle1 main-color">
+        <!-- <div class="text-justify q-pa-md q-mt-md text-subtitle1 main-color">
             <div class="text-center text-h6 text-weight-regular q-mb-md">Por quê ?</div>
             <p>
                 O controle financeiro permite a uma pessoa ou empresa gerenciar suas finanças de maneira eficiente, acompanhar suas receitas e despesas, planejar orçamentos, identificar problemas
                 financeiros e tomar decisões informadas. Isso pode ajudar a evitar dívidas desnecessárias, maximizar lucros e alcançar metas financeiras a longo prazo. Além disso, um bom controle
                 financeiro pode ajudar a garantir que você tenha dinheiro suficiente para gastos imprevistos ou emergências e ajudar a garantir segurança financeira a longo prazo.
             </p>
-        </div>
+        </div> -->
     </q-page>
 </template>
 
