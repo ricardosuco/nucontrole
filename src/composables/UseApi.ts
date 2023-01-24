@@ -24,13 +24,25 @@ export default function useApi() {
         return data[0]
     }
 
-    const getByCategory = async (type: string) => {
+    const getByCategory = async (type: string, period: Period | null) => {
+        if (period) {
+            const { month, year } = period
+            const { data, error } = await supabase.rpc('filter_category_with_period', { type_input: type, month_input: month, year_input: year })
+            if (error) throw error
+            return data
+        }
         const { data, error } = await supabase.rpc('filter_category', { type_input: type })
         if (error) throw error
         return data
     }
 
-    const getByStatus = async (type: string) => {
+    const getByStatus = async (type: string, period: Period | null) => {
+        if (period) {
+            const { month, year } = period
+            const { data, error } = await supabase.rpc('filter_status_with_period', { type_input: type, month_input: month, year_input: year })
+            if (error) throw error
+            return data
+        }
         const { data, error } = await supabase.rpc('filter_status', { type_input: type })
         if (error) throw error
         return data
