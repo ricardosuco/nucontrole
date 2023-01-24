@@ -16,6 +16,14 @@ const mutation: MutationTree<ExampleStateInterface> = {
 
   SET_PERIOD(state, period): void {
     state.period = period
+  },
+
+  SET_TOTAL_PER_CATEGORY(state, totalPerCategory): void {
+    state.totalPerCategory = totalPerCategory
+  },
+
+  SET_TOTAL_PER_STATUS(state, totalPerStatus): void {
+    state.totalPerStatus = totalPerStatus
   }
 
 };

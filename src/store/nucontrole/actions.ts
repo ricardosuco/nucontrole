@@ -33,14 +33,30 @@ const actions: ActionTree<ExampleStateInterface, StateInterface> = {
         }
     },
 
-    async getDataForCategoryChart(context): Promise<Array<object> | null> {
-        let response = await getByCategory(context.getters.currentType)
-        return response
+    async getDataForCategoryChart(context): Promise<void> {
+        try {
+            let response = await getByCategory(context.getters.currentType, context.getters.currentPeriod)
+            context.commit('SET_TOTAL_PER_CATEGORY', response)
+        } catch (error: any) {
+            Notify.create({
+                message: error?.message,
+                type: 'negative',
+                position: 'top'
+            })
+        }
     },
 
-    async getDataForStatusChart(context): Promise<Array<object> | null> {
-        let response = await getByStatus(context.getters.currentType)
-        return response
+    async getDataForStatusChart(context): Promise<void> {
+        try {
+            let response = await getByStatus(context.getters.currentType, context.getters.currentPeriod)
+            context.commit('SET_TOTAL_PER_STATUS', response)
+        } catch (error: any) {
+            Notify.create({
+                message: error.message,
+                type: 'negative',
+                position: 'top'
+            })
+        }
     }
 }
 
