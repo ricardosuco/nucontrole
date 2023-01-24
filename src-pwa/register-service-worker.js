@@ -1,5 +1,5 @@
 import { register } from 'register-service-worker'
-import { Dialog, Notify } from 'quasar'
+import { Dialog, Loading, Notify } from 'quasar'
 
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
@@ -43,11 +43,11 @@ register(process.env.SERVICE_WORKER_FILE, {
   },
 
   offline () {
-    Dialog.create({
-      title: 'Sem conexão',
-      message: 'Você está sem conexão com a internet.',
-      color: 'negative',
-      icon: 'cloud_off',
+    Loading.show({
+      message: 'Você está offline.',
+      spinnerSize: 0,
+      messageColor: 'white',
+      customClass: 'bg-red-9',
     })
   },
 

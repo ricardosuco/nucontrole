@@ -68,6 +68,8 @@ export default defineComponent({
     async created() {
         this.$q.loading.show()
         await this.$store.dispatch('getList', this.currentPeriodInLocalStorage)
+        await this.$store.dispatch('getDataForCategoryChart')
+        await this.$store.dispatch('getDataForStatusChart')
         this.$q.loading.hide()
     },
 })

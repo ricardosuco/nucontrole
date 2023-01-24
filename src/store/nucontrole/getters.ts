@@ -36,6 +36,14 @@ const getters: GetterTree<ExampleStateInterface, StateInterface> = {
 
   currentPeriod(state): object {
     return state.period
+  },
+
+  getTotalPerCategory(state): Array<object> {
+    return state.totalPerCategory
+  },
+
+  getTotalPerStatus(state): Array<object> {
+    return state.totalPerStatus
   }
 
 };

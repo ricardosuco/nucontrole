@@ -34,13 +34,15 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapGetters(['currentPeriod'])
+        ...mapGetters(['currentPeriod']),
     },
 
     methods: {
         async deleteRegister() {
             await this.remove('registers', this.id)
             await this.$store.dispatch('getList', this.currentPeriod)
+            await this.$store.dispatch('getDataForCategoryChart')
+            await this.$store.dispatch('getDataForStatusChart')
             this.$emit('onClose')
         },
     },

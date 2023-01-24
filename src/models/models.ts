@@ -2,6 +2,18 @@ export interface LoginUser {
     email: string;
     password: string;
 }
+export interface Registers {
+    id?: number;
+    type?: string;
+    description?: string;
+    value?: number;
+    created_at?: string;
+    category?: string;
+    status?: string;
+    user_id?: string;
+    month?: string;
+    year?: string;
+}
 
 export interface Column {
     name: string
@@ -14,8 +26,8 @@ export interface Column {
 }
 
 export interface Period {
-    month: string | null,
-    year: number | null
+    month?: string | null,
+    year?: number | null
 }
 
 export interface MonthOptions {

@@ -1,20 +1,11 @@
-import { Period } from 'src/models/models';
-interface Registers {
-  id?: number;
-  type?: string;
-  description?: string;
-  value?: number;
-  created_at?: string;
-  category?: string;
-  status?: string;
-  user_id?: string;
-  month?: string;
-  year?: string;
-}
+import { Period, Registers } from 'src/models/models';
+
 export interface ExampleStateInterface {
   registers: Array<Registers>;
   currentType: string;
   period: Period;
+  totalPerCategory: Array<object>;
+  totalPerStatus: Array<object>;
 }
 
 function state(): ExampleStateInterface {
@@ -24,7 +15,9 @@ function state(): ExampleStateInterface {
     period: {
       month: null,
       year: null
-    }
+    },
+    totalPerCategory: [],
+    totalPerStatus: []
   }
 };
 

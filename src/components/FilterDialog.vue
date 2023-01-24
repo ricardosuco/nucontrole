@@ -57,6 +57,8 @@ export default defineComponent({
                     await this.$store.dispatch('getList', this.period)
                     this.$q.localStorage.set('period', this.period)
                 }
+                await this.$store.dispatch('getDataForCategoryChart')
+                await this.$store.dispatch('getDataForStatusChart')
             } catch (error: any) {
                 this.$q.notify({
                     message: error,

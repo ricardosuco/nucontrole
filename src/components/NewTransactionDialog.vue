@@ -123,6 +123,8 @@ export default defineComponent({
             newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
             await this.create('registers', newRegister)
             await this.$store.dispatch('getList', this.currentPeriod)
+            await this.$store.dispatch('getDataForCategoryChart')
+            await this.$store.dispatch('getDataForStatusChart')
             this.$emit('onClose')
         },
 
@@ -131,6 +133,8 @@ export default defineComponent({
             if (typeof newRegister.value === 'string') newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
             await this.update('registers', id, newRegister)
             await this.$store.dispatch('getList', this.currentPeriod)
+            await this.$store.dispatch('getDataForCategoryChart')
+            await this.$store.dispatch('getDataForStatusChart')
             this.$emit('onClose')
         },
 
