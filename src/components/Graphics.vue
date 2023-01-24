@@ -7,12 +7,12 @@
         </div>
         <q-card class="border-card" flat>
             <div>
-                <apexchart width="520" :options="categoryGraphic" :series="categorySeries"></apexchart>
+                <apexchart width="520" :options="categoryGraphic" :series="categoryData.series"></apexchart>
             </div>
         </q-card>
         <q-card class="border-card" flat>
             <div>
-                <apexchart width="520" :options="statusGraphic" :series="statusSeries"></apexchart>
+                <apexchart width="520" :options="statusGraphic" :series="statusData.series"></apexchart>
             </div>
         </q-card>
     </div>
@@ -32,14 +32,7 @@ export default defineComponent({
         apexchart: VueApexCharts,
     },
     data() {
-        const { getByCategory, getByStatus } = useApi()
         return {
-            getByCategory,
-            getByStatus,
-            categoryLabels: [] as Array<string>,
-            statusLabels: [] as Array<string>,
-            categorySeries: [] as Array<number>,
-            statusSeries: [] as Array<number>,
             configChart: {
                 chart: {
                     width: 520,
@@ -86,25 +79,25 @@ export default defineComponent({
 
     watch: {
         async currentType() {
-            await this.fetchCategoryData()
-            await this.fetchStatusData()
+            await this.$store.dispatch('getDataForCategoryChart')
+            await this.$store.dispatch('getDataForStatusChart')
         },
     },
 
     computed: {
-        ...mapGetters(['totalIncome', 'totalExpenses', 'currentType']),
+        ...mapGetters(['totalIncome', 'totalExpenses', 'currentType', 'getTotalPerCategory', 'getTotalPerStatus']),
 
         categoryGraphic(): object {
             let options = cloneDeep(this.configChart)
             options.title.text = 'Categoria'
-            options.labels = [...this.categoryLabels]
+            options.labels = [...this.categoryData.labels] 
             return options
         },
 
         statusGraphic(): object {
             let options = cloneDeep(this.configChart)
             options.title.text = 'Status'
-            options.labels = [...this.statusLabels]
+            options.labels = [...this.statusData.labels]
             return options
         },
 
@@ -114,46 +107,30 @@ export default defineComponent({
             options.labels = ['Receitas', 'Despesas']
             return options
         },
-    },
 
-    methods: {
-        async fetchCategoryData(): Promise<void> {
-            this.clearArrsCategory()
-            let response = await this.$store.dispatch('getDataForCategoryChart')
-            response?.forEach((item: any) => {
-                this.categoryLabels.push(item.category)
-                this.categorySeries.push(item.value)
+        categoryData(): any {
+            const category = {
+                labels: [] as string[],
+                series: [] as number[],
+            }
+            this.getTotalPerCategory.forEach((item: any) => {
+                category.labels.push(item?.category)
+                category.series.push(item?.value)
             })
+            return category
         },
 
-        async fetchStatusData(): Promise<void> {
-            this.clearArrsStatus()
-            let response = await this.$store.dispatch('getDataForStatusChart')
-            response?.forEach((item: any) => {
-                this.statusLabels.push(item.status)
-                this.statusSeries.push(item.value)
+        statusData(): any {
+            const status = {
+                labels: [] as string[],
+                series: [] as number[],
+            }
+            this.getTotalPerStatus.forEach((item: any) => {
+                status.labels.push(item?.status)
+                status.series.push(item?.value)
             })
-        },
-
-        clearArrsStatus(): void {
-            this.statusLabels = []
-            this.statusSeries = []
-        },
-
-        clearArrsCategory(): void {
-            this.categoryLabels = []
-            this.categorySeries = []
-        },
-    },
-
-    async created() {
-        await this.fetchCategoryData()
-        await this.fetchStatusData()
-    },
-
-    beforeUnmount() {
-        this.clearArrsStatus()
-        this.clearArrsCategory()
+            return status
+        }
     },
 })
 </script>
