@@ -55,7 +55,7 @@ export default defineComponent({
         const { logout } = useAuthUser()
         return {
             logout,
-            isShowValues: true,
+            isShowValues: this.$q.screen.gt.xs ? true : false,
         }
     },
 
