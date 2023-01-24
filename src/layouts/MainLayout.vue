@@ -45,13 +45,13 @@
                     <q-tooltip class="text-subtitle2">Mostrar valores</q-tooltip>
                 </q-btn>
             </q-page-sticky> -->
-            <q-dialog :maximized="$q.platform.is.desktop ? false : true" v-model="showDialogNewTransaction">
+            <q-dialog persistent :maximized="$q.platform.is.desktop ? false : true" v-model="showDialogNewTransaction">
                 <NewTransactionDialog @onClose="onClose" />
             </q-dialog>
-            <q-dialog v-model="showDialogFilter">
+            <q-dialog persistent v-model="showDialogFilter">
                 <FilterDialog />
             </q-dialog>
-            <q-dialog v-model="showCopyRegistersDialog">
+            <q-dialog persistent v-model="showCopyRegistersDialog">
                 <CopyRegistersDialog @closeRegistersCopyDialog="closeRegistersCopyDialog($event)" />
             </q-dialog>
         </q-layout>
