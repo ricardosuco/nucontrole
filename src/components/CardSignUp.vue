@@ -4,10 +4,10 @@
             <q-form ref="signup" @submit.prevent="onSubmit">
                 <div class="row q-pa-lg q-col-gutter-sm">
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-input autofocus v-model="user.options.data.name" lazy-rules label="Nome*" no-error-icon outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                        <q-input autofocus v-model="user.options.data.name" lazy-rules label="Nome*" no-error-icon outlined :rules="[(val) => !!val || 'Campo obrigatório']" />
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-input v-model="user.email" lazy-rules label="Email*" no-error-icon outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório', isValidEmail]" />
+                        <q-input v-model="user.email" lazy-rules label="Email*" no-error-icon outlined :rules="[(val) => !!val || 'Campo obrigatório', isValidEmail]" />
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <q-input
@@ -17,13 +17,14 @@
                             no-error-icon
                             :type="isPwd ? 'text' : 'password'"
                             outlined
-                            clear-icon="close"
                             :rules="[(val) => !!val || 'Campo obrigatório', isValidPassword]"
                         >
                             <template v-slot:append>
                                 <span @click="isPwd = !isPwd" class="cursor-pointer text-subtitle2 text-primary">{{ isPwd ? 'Ocultar' : 'Mostrar' }}</span>
                             </template>
                         </q-input>
+                    </div>
+                    <div class="col-xs-12 col-md-12 col-lg-12">
                         <q-input
                             v-model="passwordConfirm"
                             lazy-rules
@@ -31,7 +32,6 @@
                             no-error-icon
                             :type="isPwdConfirm ? 'text' : 'password'"
                             outlined
-                            clear-icon="close"
                             :rules="[(val) => !!val || 'Campo obrigatório', isSamePassword]"
                         >
                             <template v-slot:append>
