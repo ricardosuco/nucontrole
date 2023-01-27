@@ -1,6 +1,6 @@
-import { date, LocalStorage, Notify, Loading } from 'quasar'
+import { date, Notify, Loading } from 'quasar'
 import { MonthOptions, Period } from 'src/models/models'
-import { Base64 } from 'js-base64';
+
 
 export const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('pt-BR', {
@@ -84,22 +84,6 @@ export const exportCsv = (registers: Array<object>, incomes: number, expenses: n
             })
     }
 }
-
-// export const convertAccessToken = (token: string): void => {
-//     try {
-//         token = token.split('#access_token=')[1].split('.')[1]
-//         let decodeToken = JSON.parse(Base64.decode(token))
-//         LocalStorage.set('authUser', decodeToken.sub)
-//         LocalStorage.set('userName', decodeToken.user_metadata.full_name)  
-//     } catch (error: any) {
-//         Notify.create({
-//             message: 'Token inválido',
-//             type: 'negative',
-//             position: 'top'
-//         })
-//     }
-//     return 
-// }
 
 export const konamiCodeSilvioSantos = (): void => {
 let secretCode = 'maoe'
