@@ -22,7 +22,6 @@
 import { defineComponent, PropType } from 'vue'
 import { formatCurrency } from 'src/services/services'
 import { mapGetters } from 'vuex'
-import useApi from 'src/composables/UseApi'
 import VueApexCharts from 'vue3-apexcharts'
 import _, { cloneDeep } from 'lodash'
 

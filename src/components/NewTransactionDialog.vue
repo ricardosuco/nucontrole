@@ -8,7 +8,7 @@
                 </div>
                 <div class="row q-gutter-y-sm">
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-input v-model="register.description" label="Descrição" maxlength="50" counter outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                        <q-input v-model="register.description" label="Descrição" maxlength="50" counter outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon/>
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <div class="row q-col-gutter-md q-mb-md">
@@ -23,18 +23,18 @@
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <div class="row q-col-gutter-md">
                             <div class="col-xs-6 col-md-6 col-lg-6">
-                                <q-select v-model="register.month" :options="monthOptions" label="Mês" outlined emit-value clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                                <q-select v-model="register.month" :options="monthOptions" label="Mês" outlined emit-value clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon/>
                             </div>
                             <div class="col-xs-6 col-md-6 col-lg-6">
-                                <q-select v-model="register.year" :options="yearOptions" label="Ano" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                                <q-select v-model="register.year" :options="yearOptions" label="Ano" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon/>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-select v-model="register.category" :options="categoryOptions" label="Categoria" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                        <q-select v-model="register.category" :options="categoryOptions" label="Categoria" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon/>
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-select v-model="register.status" :options="statusOptions" label="Status" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" />
+                        <q-select v-model="register.status" :options="statusOptions" label="Status" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon/>
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <q-input
@@ -48,6 +48,7 @@
                             mask="#,##"
                             clear-icon="close"
                             :rules="[(val) => !!val || 'Campo obrigatório']"
+                            no-error-icon
                         />
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
