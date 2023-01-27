@@ -52,8 +52,9 @@ export default defineComponent({
         Card,
     },
     data() {
-        const { logout } = useAuthUser()
+        const { logout, authUser } = useAuthUser()
         return {
+            authUser,
             logout,
             isShowValues: this.$q.screen.gt.xs ? true : false,
         }
@@ -63,7 +64,7 @@ export default defineComponent({
         ...mapGetters(['totalIncome', 'totalExpenses', 'totalBalance', 'currentPeriod']),
 
         userName(): string | object | null {
-            return this.$q.localStorage.getItem('userName')
+            return this.authUser.value?.user_metadata?.name
         },
 
         showPeriod(): string {

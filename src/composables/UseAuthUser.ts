@@ -2,6 +2,9 @@ import useSupabase from 'boot/supabase'
 import { date, LocalStorage, Loading } from 'quasar'
 import { LoginUser } from 'src/models'
 import { localeDate } from 'src/services/services'
+import { ref } from 'vue'
+
+const authUser: object | null | any = ref(null)
 
 export default function useAuthUser() {
     const { supabase } = useSupabase()
@@ -14,21 +17,16 @@ export default function useAuthUser() {
             LocalStorage.set('period', {
                 month: date.formatDate(Date.now(), 'MMM', localeDate),
                 year: date.formatDate(Date.now(), 'YYYY', localeDate)
-            })
-            LocalStorage.set('authUser', data?.user?.id)
-            LocalStorage.set('userName', data?.user?.user_metadata.name)          
+            })    
     }
 
     const loginWithSocialProvider = async (provider: any) => {
         const { data, error } = await supabase.auth.signInWithOAuth({provider: provider})
         if (error) throw error
-        console.log(data)
-        // LocalStorage.set('period', {
-        //     month: date.formatDate(Date.now(), 'MMM', localeDate),
-        //     year: date.formatDate(Date.now(), 'YYYY', localeDate)
-        // })
-        // LocalStorage.set('authUser', data?.user?.id)
-        // LocalStorage.set('userName', data?.user?.user_metadata.full_name) 
+        LocalStorage.set('period', {
+            month: date.formatDate(Date.now(), 'MMM', localeDate),
+            year: date.formatDate(Date.now(), 'YYYY', localeDate)
+        })
     };
 
     const logout = async () => {
@@ -37,13 +35,11 @@ export default function useAuthUser() {
         Loading.hide()
         if (error) throw error
         LocalStorage.remove('period')
-        LocalStorage.remove('authUser')
-        LocalStorage.remove('userName')
     }
 
-    // const isLoggedIn = () => {
-    //     return !!user.value;
-    // }
+    const isLoggedIn = () => {
+        return !!authUser.value
+    }
 
     const register = async (loginUser: LoginUser, ...meta: any[]) => {
             Loading.show()
@@ -68,9 +64,11 @@ export default function useAuthUser() {
     }
 
     return {
+        authUser,
         login,
         loginWithSocialProvider,
         logout,
+        isLoggedIn,
         register,
         updateUser,
         sendPasswordResetEmail,

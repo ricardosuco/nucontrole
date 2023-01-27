@@ -1,9 +1,8 @@
-import { LocalStorage } from 'quasar';
 import { route } from 'quasar/wrappers';
 import useAuthUser from 'src/composables/UseAuthUser';
-import { convertAccessToken } from 'src/services/services';
+// import { convertAccessToken } from 'src/services/services';
 
-const { logout } = useAuthUser();
+const { logout, isLoggedIn } = useAuthUser();
 import {
   createMemoryHistory,
   createRouter,
@@ -41,13 +40,13 @@ export default route<StateInterface>(function (/* { store, ssrContext } */) {
   });
   
   Router.beforeEach(async (to, from, next) => {
-    if (to.hash.includes('#access_token') && !to.query.recovery) {
-      convertAccessToken(to.hash)
-    }
-    if (to.meta.requiresAuth && !LocalStorage.has('authUser')) {
+    // if (to.hash.includes('#access_token') && !to.query.recovery) {
+    //   convertAccessToken(to.hash)
+    // }
+    if (to.meta.requiresAuth && !isLoggedIn()) {
       await logout()
       next('/login')
-    } else if (to.path === '/login' && LocalStorage.has('authUser')) {
+    } else if (to.path === '/login' && isLoggedIn()) {
       next('/')
     } else
     next()
