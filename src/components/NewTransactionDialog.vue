@@ -42,6 +42,7 @@
                             label="Valor"
                             outlined
                             reverse-fill-mask
+                            inputmode="numeric"
                             fill-mask="0"
                             prefix="R$"
                             mask="#,##"
