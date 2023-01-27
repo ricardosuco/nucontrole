@@ -7,7 +7,7 @@
                         <div class="q-mb-md text-h6 text-center text-weight-regular main-color">Enviaremos um link para criar uma nova senha</div>
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-input autofocus v-model="email" lazy-rules label="Email*" no-error-icon outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório', isValidEmail]" />
+                        <q-input autofocus v-model="email" lazy-rules label="Email" no-error-icon outlined :rules="[(val) => !!val || 'Campo obrigatório', isValidEmail]" />
                     </div>
 
                     <div class="col-xs-12 col-md-12 col-lg-12">

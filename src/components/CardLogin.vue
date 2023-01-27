@@ -4,11 +4,11 @@
             <q-form @submit.prevent="onSubmit">
                 <div class="row q-pa-lg q-col-gutter-sm">
                     <div class="col-xs-12 col-md-12 col-lg-12 q-mb-md">
-                        <q-input autofocus v-model="user.email" label="Email*" no-error-icon outlined clear-icon="close" />
+                        <q-input autofocus v-model="user.email" label="Email" no-error-icon outlined />
                     </div>
 
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-input v-model="user.password" lazy-rules label="Senha*" no-error-icon :type="isPwd ? 'text' : 'password'" outlined clear-icon="close">
+                        <q-input v-model="user.password" lazy-rules label="Senha" no-error-icon :type="isPwd ? 'text' : 'password'" outlined >
                             <template v-slot:append>
                                 <span @click="isPwd = !isPwd" class="cursor-pointer text-subtitle2 text-primary">{{ isPwd ? 'Ocultar' : 'Mostrar' }}</span>
                             </template>
