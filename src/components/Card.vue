@@ -9,7 +9,7 @@
                 <h5 class="text-primary">{{ formatCurrency(value) }}</h5>
             </div>
             <div v-else>
-                <q-skeleton style="padding-bottom: 7px" width="150px" type="rect" animation="none"/>
+                <h5>●●●●●</h5>
             </div>
         </q-card>
     </div>
