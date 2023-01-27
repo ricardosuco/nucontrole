@@ -64,7 +64,7 @@ export default defineComponent({
         ...mapGetters(['totalIncome', 'totalExpenses', 'totalBalance', 'currentPeriod']),
 
         userName(): string | object | null {
-            return this.authUser.value?.user_metadata?.name
+            return this.authUser?.user_metadata?.name
         },
 
         showPeriod(): string {
