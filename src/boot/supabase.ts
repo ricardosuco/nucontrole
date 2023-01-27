@@ -7,7 +7,8 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 supabase.auth.onAuthStateChange((event, session) => {
   let { authUser } = useAuthUser()
-  authUser.value = session?.user || null
+  if (event === 'PASSWORD_RECOVERY') authUser.value = null
+  else authUser.value = session?.user || null
 })
 
 export default function useSupabase() {
