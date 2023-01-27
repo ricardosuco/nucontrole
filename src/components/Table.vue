@@ -42,7 +42,7 @@
             </template>
         </q-table>
     </div>
-    <q-dialog :maximized="$q.platform.is.desktop ? false : true" v-model="dialogEdit">
+    <q-dialog :maximized="$q.platform.is.desktop ? false : true" v-model="dialogEdit" persistent>
         <NewTransactionDialog @onClose="onClose" :editRegister="editRegister" :isEdit="true" title="Editar registro" @closeDialogEdit="closeDialogEdit()" />
     </q-dialog>
     <q-dialog v-model="dialogDelete">

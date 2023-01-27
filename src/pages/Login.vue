@@ -92,10 +92,8 @@ export default defineComponent({
 
     created() {
         let queryString = this.$route.query
-        console.log(queryString)
         if ('recovery' in queryString && queryString.recovery === 'true') {
             this.recoveryPwd = true
-            // this.resetToken = this.$route.query.token as string
         }
     },
 })

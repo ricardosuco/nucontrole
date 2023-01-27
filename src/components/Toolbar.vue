@@ -35,10 +35,10 @@
             <q-btn @click="showCopyRegistersDialog = !showCopyRegistersDialog" v-if="$q.screen.gt.xs" size="18px" no-caps icon="history" class="full-width q-px-lg q-py-sm" color="accent" unelevated label="Copiar registros" />
         </div>
     </div>
-    <q-dialog v-model="showDialogFilter">
+    <q-dialog v-model="showDialogFilter" persistent>
         <FilterDialog />
     </q-dialog>
-    <q-dialog v-model="showCopyRegistersDialog" >
+    <q-dialog v-model="showCopyRegistersDialog" persistent>
         <CopyRegistersDialog @closeRegistersCopyDialog="closeRegistersCopyDialog($event)"/>
     </q-dialog>
 </template>

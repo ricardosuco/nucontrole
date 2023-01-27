@@ -16,14 +16,14 @@
                 </div>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12">
-                <q-btn @click="filterByPeriod(false)" class="full-width q-pa-sm" size="lg" no-caps color="secondary" unelevated label="Filtrar período" v-close-popup />
+                <q-btn @click="filterByPeriod(false)" class="full-width text-h6 q-pa-md" no-caps color="secondary" unelevated label="Filtrar período" v-close-popup />
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12">
-                <q-btn @click="filterByPeriod(true)" class="full-width q-pa-sm" size="lg" no-caps color="primary" unelevated label="Exibir todos" v-close-popup />
+                <q-btn @click="filterByPeriod(true)" class="full-width text-h6 q-pa-md" no-caps color="primary" unelevated label="Exibir todos" v-close-popup />
             </div>
-            <div class="col-xs-12 col-md-12 col-lg-12">
-                <q-btn class="full-width q-pa-sm" outline color="primary" size="lg" no-caps label="Voltar" v-close-popup />
-            </div>
+            <!-- <div class="col-xs-12 col-md-12 col-lg-12">
+                <q-btn class="full-width text-h6 q-pa-md" outline color="primary" no-caps label="Voltar" v-close-popup />
+            </div> -->
         </div>
     </q-card>
 </template>
