@@ -1,14 +1,12 @@
 import { ActionTree } from 'vuex'
 import { StateInterface } from '../index'
 import { ExampleStateInterface } from './state'
-import { LocalStorage, Notify } from 'quasar'
+import { Notify } from 'quasar'
 import useApi from 'src/composables/UseApi'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const { list, getByCategory, getByStatus } = useApi()
 import { Period } from 'src/models'
+import { redirectWhenExpires } from 'src/services/services'
 
+const { list, getByCategory, getByStatus } = useApi()
 const actions: ActionTree<ExampleStateInterface, StateInterface> = {
     someAction(/* context */) {
         // your code
@@ -20,9 +18,8 @@ const actions: ActionTree<ExampleStateInterface, StateInterface> = {
             context.commit('SET_REGISTERS', response)
             context.commit('SET_PERIOD', period)
         } catch (error: any) {
-            if (error.status === 403) {
-                LocalStorage.remove('authUser')
-                router.push('/login')
+            if (error.message === 'JWT expired') {
+                redirectWhenExpires()
             } else {
                 Notify.create({
                     message: error.message,
