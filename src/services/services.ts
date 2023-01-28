@@ -1,3 +1,4 @@
+
 import { date, Notify, Loading } from 'quasar'
 import { MonthOptions, Period } from 'src/models/models'
 
@@ -83,6 +84,15 @@ export const exportCsv = (registers: Array<object>, incomes: number, expenses: n
                 position: 'top'
             })
     }
+}
+
+export const redirectWhenExpires = ():void => {
+        Notify.create({
+            message: 'Sessão expirada, por favor faça login novamente',
+            type: 'negative',
+            position: 'top'
+        })
+        window.location.href = '/login'
 }
 
 export const konamiCodeSilvioSantos = (): void => {

@@ -1,5 +1,5 @@
 import useSupabase from 'boot/supabase'
-import { date, LocalStorage, Loading } from 'quasar'
+import { date, LocalStorage, Loading, Notify } from 'quasar'
 import { LoginUser } from 'src/models'
 import { localeDate } from 'src/services/services'
 import { ref } from 'vue'
@@ -20,7 +20,7 @@ export default function useAuthUser() {
             })    
     }
 
-    const loginWithSocialProvider = async (provider: any) => {
+    const loginWithSocialProvider = async (provider: any): Promise<void> => {
         const { data, error } = await supabase.auth.signInWithOAuth({provider: provider})
         if (error) throw error
         LocalStorage.set('period', {
@@ -29,7 +29,7 @@ export default function useAuthUser() {
         })
     };
 
-    const logout = async () => {
+    const logout = async (): Promise<void> => {
         Loading.show()
         const { error } = await supabase.auth.signOut()
         Loading.hide()
@@ -41,7 +41,7 @@ export default function useAuthUser() {
         return !!authUser.value
     }
 
-    const register = async (loginUser: LoginUser, ...meta: any[]) => {
+    const register = async (loginUser: LoginUser, ...meta: any[]): Promise<void> => {
             Loading.show()
             const { data, error } = await supabase.auth.signUp(loginUser)
             Loading.hide()
@@ -49,18 +49,33 @@ export default function useAuthUser() {
             if (!data.user?.identities?.length) throw new Error('Já existe um cadastro vinculado a este email') 
     }
 
-    const updateUser = async (new_password: string) => {
+    const updateUser = async (new_password: string): Promise<void> => {
         const { data, error } = await supabase.auth.updateUser({
             password: new_password
           })
           if (error) throw error
     }
 
-    const sendPasswordResetEmail = async (email: string) => {
+    const sendPasswordResetEmail = async (email: string): Promise<void> => {
         const {data, error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: `${window.location.origin}/login?recovery=true`,
           })
         if (error) throw error
+    }
+
+    const retriveUser = async (): Promise<void> => {
+        try {
+            const { data: { user }, error } = await supabase.auth.getUser()
+            if (error) throw error
+            authUser.value = {...user}
+        } catch (error: any) {
+            Notify.create({
+                message: 'Token inválido',
+                type: 'negative',
+                position: 'top'
+            })
+        }
+        return 
     }
 
     return {
@@ -72,5 +87,6 @@ export default function useAuthUser() {
         register,
         updateUser,
         sendPasswordResetEmail,
+        retriveUser,
     }
 }

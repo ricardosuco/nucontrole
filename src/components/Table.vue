@@ -56,6 +56,7 @@ import { formatCurrency, formatDate } from 'src/services/services'
 import { Column } from 'src/models'
 import DeleteDialog from 'src/components/DeleteDialog.vue'
 import NewTransactionDialog from 'src/components/NewTransactionDialog.vue'
+import { mapGetters } from 'vuex'
 
 export default defineComponent({
     components: {
@@ -146,6 +147,10 @@ export default defineComponent({
         }
     },
 
+    computed: {
+        ...mapGetters(['currentPeriod']),
+    },
+
     methods: {
         formatCurrency,
 
@@ -166,9 +171,12 @@ export default defineComponent({
             this.editRegister = val
         },
 
-        onClose(): void {
+       async onClose(): Promise<void> {
             this.dialogDelete = false
             this.dialogEdit = false
+            await this.$store.dispatch('getList', this.currentPeriod)
+            await this.$store.dispatch('getDataForCategoryChart')
+            await this.$store.dispatch('getDataForStatusChart')
         },
     },
 })

@@ -39,11 +39,25 @@ export default defineComponent({
 
     methods: {
         async deleteRegister() {
-            await this.remove('registers', this.id)
-            await this.$store.dispatch('getList', this.currentPeriod)
-            await this.$store.dispatch('getDataForCategoryChart')
-            await this.$store.dispatch('getDataForStatusChart')
-            this.$emit('onClose')
+            try {
+                this.$q.loading.show()
+                await this.remove('registers', this.id)
+                this.$q.notify({
+                    html: true,
+                    message: 'Registro removido! <span style="font-size: 20px">&#128522;</span>',
+                    type: 'positive',
+                    position: 'top',
+                })
+                this.$emit('onClose')
+            } catch (error) {
+                this.$q.notify({
+                    html: true,
+                    message: 'Ops, ocorreu um erro ao adicionar o registro... <span style="font-size: 20px">&#128549;</span>',
+                    type: 'negative',
+                    position: 'top',
+                })
+            }
+            this.$q.loading.hide()
         },
     },
 })
