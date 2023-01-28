@@ -1,5 +1,4 @@
 import useSupabase from 'src/boot/supabase'
-import { Notify, Loading } from 'quasar'
 import { Period, CopyRegistersArgs } from 'src/models'
 import useAuthUser from 'src/composables/UseAuthUser'
 
@@ -57,40 +56,21 @@ export default function useApi() {
     }
 
     const create = async (table: string, body: any) => {
-        Loading.show()
         const { data, error } = await supabase.from(table).insert({
             ...body,
             user_id: authUser.value.id,
         })
-        Loading.hide()
         if (error) throw error
-        Notify.create({
-            message: 'Novo registro adicionado!',
-            type: 'positive',
-            position: 'top',
-        })
-        return data
     }
 
     const update = async (table: string, id: number, body: any) => {
-        Loading.show()
         const { data, error } = await supabase.from(table).update(body).eq('id', id)
-        Loading.hide()
         if (error) throw error
-        return data
     }
 
     const remove = async (table: string, id: number) => {
-        Loading.show()
         const { data, error } = await supabase.from(table).delete().eq('id', id)
-        Loading.hide()
         if (error) throw error
-        Notify.create({
-            message: 'Registro removido!',
-            type: 'positive',
-            position: 'top',
-        })
-        return data
     }
 
     return {
@@ -98,7 +78,6 @@ export default function useApi() {
         getById,
         getByCategory,
         getByStatus,
-        // getByDate,
         create,
         update,
         remove,
