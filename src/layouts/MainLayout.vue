@@ -95,13 +95,16 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapGetters(['allRegisters', 'totalIncome', 'totalExpenses', 'totalBalance']),
+        ...mapGetters(['allRegisters', 'totalIncome', 'totalExpenses', 'totalBalance', 'currentPeriod']),
     },
 
     methods: {
         exportCsv,
-        onClose() {
+        async onClose() {
             this.showDialogNewTransaction = false
+            await this.$store.dispatch('getList', this.currentPeriod)
+            await this.$store.dispatch('getDataForCategoryChart')
+            await this.$store.dispatch('getDataForStatusChart')
         },
         async handleLogout() {
             await this.logout()
