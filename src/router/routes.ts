@@ -19,6 +19,11 @@ const routes: RouteRecordRaw[] = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue'),
   },
+
+  {
+    path: '/politica-de-privacidade',
+    component: () => import('pages/PrivacyPolicy.vue'),
+  }
 ];
 
 export default routes;
