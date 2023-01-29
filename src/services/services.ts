@@ -2,7 +2,6 @@
 import { date, Notify, Loading } from 'quasar'
 import { MonthOptions, Period } from 'src/models/models'
 
-
 export const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('pt-BR', {
         style: 'currency',
@@ -86,13 +85,13 @@ export const exportCsv = (registers: Array<object>, incomes: number, expenses: n
     }
 }
 
-export const redirectWhenExpires = ():void => {
+export const redirectWhenExpires = function (this: any):void {
         Notify.create({
             message: 'Sessão expirada, por favor faça login novamente',
             type: 'negative',
             position: 'top'
         })
-        window.location.href = '/login'
+        this.$router.push('/login')
 }
 
 export const konamiCodeSilvioSantos = (): void => {
