@@ -43,7 +43,23 @@
                         <q-select v-model="register.category" :options="categoryOptions" label="Categoria" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon />
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
-                        <q-select v-model="register.status" :options="statusOptions" label="Status" outlined clear-icon="close" :rules="[(val) => !!val || 'Campo obrigatório']" no-error-icon />
+                        <div class="row q-col-gutter-md q-mb-md">
+                            <div class="col-xs-6 col-md-6 col-lg-6">
+                                <q-btn @click="setRegisterStatus('Pendente')" class="full-width q-pa-md text-subtitle1" unelevated :color="btnStatusColor.pendente" no-caps label="Pendente" />
+                            </div>
+                            <div class="col-xs-6 col-md-6 col-lg-6">
+                                <q-btn
+                                    v-if="register.type === 'Receita'"
+                                    @click="setRegisterStatus('Recebido')"
+                                    class="full-width q-pa-md text-subtitle1"
+                                    unelevated
+                                    :color="btnStatusColor.recebido"
+                                    no-caps
+                                    label="Recebido"
+                                />
+                                <q-btn v-else @click="setRegisterStatus('Pago')" class="full-width q-pa-md text-subtitle1" unelevated :color="btnStatusColor.pago" no-caps label="Pago" />
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <q-input
@@ -99,14 +115,13 @@ export default defineComponent({
             update,
             monthOptions,
             yearOptions,
-            statusOptions: ['Recebido', 'Pendente'],
             categoryOptions: ['Bônus', 'Rendimentos', 'Salário', 'Serviços', 'Outros'],
             register: {
                 description: '',
                 category: '',
                 type: 'Despesa',
                 value: '',
-                status: '',
+                status: 'Pendente',
                 month: this.currentDate().month,
                 year: this.currentDate().year,
             },
@@ -123,6 +138,18 @@ export default defineComponent({
             }
             return colors
         },
+
+        btnStatusColor() {
+            const colors = {}
+            if (this.register.type === 'Receita') {
+                colors.recebido = this.register.status === 'Recebido' ? 'primary' : 'teal-2'
+                colors.pendente = this.register.status === 'Pendente' ? 'primary' : 'teal-2'
+            } else {
+                colors.pago = this.register.status === 'Pago' ? 'primary' : 'teal-2'
+                colors.pendente = this.register.status === 'Pendente' ? 'primary' : 'teal-2'
+            }
+            return colors
+        }
     },
 
     methods: {
@@ -186,18 +213,21 @@ export default defineComponent({
         setRegisterType(type) {
             this.register.type = type
             this.register.category = ''
-            this.register.status = ''
             this.setOptions()
             this.$refs.registerCard.resetValidation()
         },
 
+        setRegisterStatus(status) {
+            this.register.status = status
+        },
+
         setOptions() {
             if (this.register.type === 'Receita') {
-                this.statusOptions = ['Recebido', 'Pendente']
                 this.categoryOptions = ['Bônus', 'Rendimentos', 'Salário', 'Serviços', 'Outros']
+                this.register.status === 'Pago' ? this.register.status = 'Recebido' : 'Pendente'
             } else {
-                this.statusOptions = ['Pago', 'Pendente']
                 this.categoryOptions = ['Fixa', 'Variável', 'Reserva']
+                this.register.status === 'Recebido' ? this.register.status = 'Pago' : 'Pendente'
             }
         },
     },
