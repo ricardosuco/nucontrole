@@ -1,5 +1,5 @@
 import { register } from 'register-service-worker'
-import { Dialog, Loading, Notify } from 'quasar'
+import { Notify } from 'quasar'
 
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
@@ -42,14 +42,7 @@ register(process.env.SERVICE_WORKER_FILE, {
     })
   },
 
-  offline () {
-    Loading.show({
-      message: 'Você está offline.',
-      spinnerSize: 0,
-      messageColor: 'white',
-      customClass: 'bg-red-9',
-    })
-  },
+  offline () {},
 
   error (/* err */) {
     // console.error('Error during service worker registration:', err)
