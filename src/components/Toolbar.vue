@@ -87,7 +87,7 @@ export default defineComponent({
         },
         
         alterTypeBtn() {
-            return this.currentType === 'Despesa' ? 'Receita' : 'Despesa'
+            return this.currentType === 'Despesas' ? 'Receitas' : 'Despesas'
         },
     },
 })

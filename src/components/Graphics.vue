@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center q-mt-xl main-color" v-if="isEmpty">
+    <div class="q-mt-xl main-color text-center" v-if="isEmpty">
         <span>Nenhum registro encontrado para o período selecionado</span>
     </div>
     <div v-else class="flex justify-around q-gutter-y-lg">
