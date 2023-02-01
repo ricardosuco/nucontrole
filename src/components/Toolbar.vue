@@ -16,7 +16,7 @@
             />
         </div>
         <div v-if="showCharts" class="col-xs-12 col-md-3 col-lg-3">
-            <q-btn @click="switchType" size="18px" no-caps icon="swap_horiz" class="full-width q-px-lg q-py-sm" color="accent" unelevated label="Alterar tipo" />
+            <q-btn @click="switchType" size="18px" no-caps icon="swap_horiz" class="full-width q-px-lg q-py-sm" color="accent" unelevated :label="alterTypeBtn()" />
         </div>
 
         <div v-if="!showCharts" class="col-xs-12 col-md-3 col-lg-3">
@@ -71,7 +71,8 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapGetters(['allRegisters', 'totalIncome', 'totalExpenses', 'totalBalance', 'currentType']),
+        ...mapGetters(['allRegisters', 'totalIncome', 'totalExpenses', 'totalBalance', 'currentType'])
+
     },
 
     methods: {
@@ -83,6 +84,10 @@ export default defineComponent({
         closeRegistersCopyDialog(event: object) {
             this.showCopyRegistersDialog = false
             this.$store.dispatch('getList', event)
+        },
+        
+        alterTypeBtn() {
+            return this.currentType === 'Despesa' ? 'Receita' : 'Despesa'
         },
     },
 })

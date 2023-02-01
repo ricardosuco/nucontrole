@@ -1,16 +1,19 @@
 <template>
-    <div class="flex justify-around q-gutter-y-lg">
+    <div class="flex justify-center q-mt-xl main-color" v-if="isEmpty">
+        <span>Nenhum registro encontrado para o período selecionado</span>
+    </div>
+    <div v-else class="flex justify-around q-gutter-y-lg">
         <div>
             <q-card class="border-card" flat>
                 <apexchart width="520" :options="typeGraphic" :series="[totalIncome, totalExpenses]"></apexchart>
             </q-card>
         </div>
-        <q-card class="border-card" flat>
+        <q-card v-if="getTotalPerCategory.length" class="border-card" flat>
             <div>
                 <apexchart width="520" :options="categoryGraphic" :series="categoryData.series"></apexchart>
             </div>
         </q-card>
-        <q-card class="border-card" flat>
+        <q-card v-if="getTotalPerStatus.length" class="border-card" flat>
             <div>
                 <apexchart width="520" :options="statusGraphic" :series="statusData.series"></apexchart>
             </div>
@@ -84,12 +87,12 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapGetters(['totalIncome', 'totalExpenses', 'currentType', 'getTotalPerCategory', 'getTotalPerStatus']),
+        ...mapGetters(['totalIncome', 'totalExpenses', 'currentType', 'getTotalPerCategory', 'getTotalPerStatus', 'allRegisters']),
 
         categoryGraphic(): object {
             let options = cloneDeep(this.configChart)
             options.title.text = 'Categoria'
-            options.labels = [...this.categoryData.labels] 
+            options.labels = [...this.categoryData.labels]
             return options
         },
 
@@ -129,7 +132,11 @@ export default defineComponent({
                 status.series.push(item?.value)
             })
             return status
-        }
+        },
+
+        isEmpty(): boolean {
+            return this.allRegisters.length === 0
+        },
     },
 })
 </script>
