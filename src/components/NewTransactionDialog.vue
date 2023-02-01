@@ -68,9 +68,8 @@
                             outlined
                             reverse-fill-mask
                             inputmode="numeric"
-                            fill-mask="0"
-                            prefix="R$"
-                            mask="#,##"
+                            prefix="R$ "
+                            v-money="money"
                             clear-icon="close"
                             :rules="[(val) => !!val || 'Campo obrigatório']"
                             no-error-icon
@@ -89,9 +88,11 @@
 import { defineComponent } from 'vue'
 import useApi from 'src/composables/UseApi'
 import { monthOptions, yearOptions, currentDate } from 'src/services/services'
+import { VMoney } from 'v-money'
 
 export default defineComponent({
     name: 'NewTransactionDialog',
+    directives: {money: VMoney},
     props: {
         title: {
             type: String,
@@ -125,6 +126,13 @@ export default defineComponent({
                 month: this.currentDate().month,
                 year: this.currentDate().year,
             },
+            money: {
+                decimal: ',',
+                thousands: '.',
+                precision: 2,
+                masked: false 
+            },
+
         }
     },
 
@@ -156,7 +164,7 @@ export default defineComponent({
         currentDate,
         async addNewRegister() {
             let newRegister = { ...this.register }
-            newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
+            newRegister.value = parseFloat(newRegister.value.replaceAll('.', '').replace(',', '.'))
             try {
                 this.$q.loading.show()
                 await this.create('registers', newRegister)
@@ -180,7 +188,7 @@ export default defineComponent({
 
         async updateRegister() {
             let { id, ...newRegister } = this.register
-            if (typeof newRegister.value === 'string') newRegister.value = parseFloat(newRegister.value.replace(',', '.'))
+            if (typeof newRegister.value === 'string') newRegister.value = parseFloat(newRegister.value.replaceAll('.', '').replace(',', '.'))
             try {
                 this.$q.loading.show()
                 await this.update('registers', id, newRegister)
