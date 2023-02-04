@@ -19,7 +19,7 @@
             <q-btn @click="switchType" size="18px" no-caps icon="swap_horiz" class="full-width q-px-lg q-py-sm" color="accent" unelevated :label="alterTypeBtn()" />
         </div>
 
-        <div v-if="!showCharts" class="col-xs-12 col-md-3 col-lg-3">
+        <div v-else class="col-xs-12 col-md-3 col-lg-3">
             <q-btn
                 @click="exportCsv(allRegisters, totalIncome, totalExpenses, totalBalance)"
                 size="18px"
@@ -87,7 +87,7 @@ export default defineComponent({
         },
         
         alterTypeBtn() {
-            return this.currentType === 'Despesas' ? 'Receitas' : 'Despesas'
+            return this.currentType === 'Despesa' ? 'Receitas' : 'Despesas'
         },
     },
 })
