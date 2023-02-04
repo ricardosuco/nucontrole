@@ -50,7 +50,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { LoginUser } from 'src/models'
 import useAuthUser from 'src/composables/UseAuthUser'
 export default defineComponent({
     name: 'CardLogin',
