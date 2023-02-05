@@ -38,7 +38,7 @@ export default defineComponent({
             configChart: {
                 chart: {
                     width: 520,
-                    type: 'donut',
+                    type: 'pie',
                 },
                 title: {
                     text: 'Status',
